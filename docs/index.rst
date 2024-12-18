@@ -1,17 +1,20 @@
-.. MON ASSISTANT PARCOURS CHATBOT BOURSE documentation master file, created by
-   sphinx-quickstart on Wed Dec 18 19:22:05 2024.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+===============================
+MON ASSISTANT PARCOURS BOURSE
+===============================
 
-MON ASSISTANT PARCOURS CHATBOT BOURSE documentation
-===================================================
+Bienvenue dans la documentation officielle de **MON ASSISTANT PARCOURS CHATBOT BOURSE**.
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+Ce chatbot est conçu pour guider les étudiants dans leur parcours académique en lien avec la bourse, notamment pour :
+- L'apprentissage des bases de la bourse.
+- Les conseils pratiques pour les investissements.
+- Les réponses aux questions fréquemment posées sur les marchés financiers.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contenu:
 
+   introduction
+   features
+   installation
+   usage
+   faq
