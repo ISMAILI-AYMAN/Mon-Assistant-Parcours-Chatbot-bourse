@@ -1,6 +1,6 @@
-===============================
-MON ASSISTANT PARCOURS BOURSE
-===============================
+====================================
+MON ASSISTANT PARCOURS BOURSE ETUDE
+====================================
 
 Bienvenue dans la documentation officielle de **MON ASSISTANT PARCOURS CHATBOT BOURSE**.
 
