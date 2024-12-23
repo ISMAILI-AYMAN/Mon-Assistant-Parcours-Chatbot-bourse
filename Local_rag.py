@@ -1,44 +1,42 @@
 import streamlit as st
-import os 
-import PyPDF2
-import ollama
 from streamlit_chat import message
 from langchain_chroma import Chroma
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.text_splitter import CharacterTextSplitter
 from langchain_ollama import ChatOllama
-from langchain_ollama import OllamaEmbeddings
-from langchain_openai import ChatOpenAI
-from langchain.schema import Document
 from ingest import main
 
+# Initialisation de la base de données
+if "db" not in st.session_state:
+    # Initialise la base de données une seule fois
+    st.session_state.db = main()  
 
-# function to read the pdf file
-def read_pdf(file):
-    pdfReader = PyPDF2.PdfReader(file)
-    all_page_text = ""
-    for page in pdfReader.pages:
-        all_page_text += page.extract_text() + "\n"
-    return all_page_text
-
-
+# Fonction pour récupérer des réponses depuis la base de données
 def retrieve_from_db(question):
-    # get the model
     model = ChatOllama(model="mistral")
-    # initialize the vector store
-    #db = initialize_vector_store()
-    db=main()
-    if db==0 : 
-        print("Cela n'a pas marché!!!")
+    retriever = st.session_state.db.similarity_search(question, k=5)
 
-    retriever = db.similarity_search(question, k=5)
-    after_rag_template = """Répondre uniquement aux questions sur ce contexte suivant:
+    after_rag_template = """Tu es un assistant spécialisé dans les parcours de bourses d'études. Ton rôle est d'aider les utilisateurs à trouver les opportunités de bourses les plus adaptées à leur profil, tout en agissant comme un conseiller et un guide personnalisé.
+    Tu ne réponds qu'en français.
+
+    Voici tes responsabilités principales :
+    1. **Réponses basées sur le contexte** : Si une question concerne une bourse présente dans la base de données fournie (le contexte), donne une réponse claire et détaillée basée uniquement sur ces informations.
+    2. **Propositions adaptées** : Si l'utilisateur n'a pas donné assez d'informations sur son profil (par exemple, pays d'origine, niveau d'études, domaine d'intérêt, etc.), invite-le poliment à fournir ces détails pour mieux l'aider.
+    3. **Suggestions de bourses** : Une fois que tu as suffisamment d'informations sur l'utilisateur, propose des opportunités de bourses pertinentes et justifie pourquoi elles conviennent à son profil.
+    4. **Guidance proactive** : Si une réponse n'est pas disponible dans la base de données, informe l'utilisateur de manière honnête et propose des pistes ou questions complémentaires pour clarifier ses besoins ou explorer d'autres options.
+
+    Lorsque tu formules tes réponses :
+    - Sois bienveillant, clair et informatif.
+    - Agis comme un mentor qui cherche à maximiser les chances de l'utilisateur de trouver une bourse adaptée.
+
+    Exemple de réponse si aucune information pertinente n'est trouvée dans la base :
+    "Je suis désolé, mais je n'ai pas cette réponse dans mes données actuelles. Cependant, pourriez-vous préciser votre niveau d'études, votre domaine d'intérêt ou le pays où vous recherchez une bourse ? Cela m'aidera à vous orienter davantage."
+
+    Tu as accès à la base de données suivante contenant des informations sur les bourses d'études :
     {context}
-    Question: {question}
-    Si tu ne diposes pas de la question alors tu réponds par :"Je suis désolé, mais je n'ai pas cette réponse à ma portée"
-    """
+
+    Question : {question}"""
 
     after_rag_prompt = ChatPromptTemplate.from_template(after_rag_template)
 
@@ -52,60 +50,115 @@ def retrieve_from_db(question):
     return after_rag_chain.invoke({"context": retriever, "question": question})
 
 
-def retriever(doc, question):
-    model_local = ChatOllama(model="mistral")
-    doc = Document(page_content=doc)
-    doc = [doc]
-    text_splitter = CharacterTextSplitter.from_tiktoken_encoder(chunk_size=800, chunk_overlap=0)
-    doc_splits = text_splitter.split_documents(doc)
+# Configuration de l'application Streamlit
+st.set_page_config(page_title="💬 Mon Assistant Parcours de bourses d'études", layout="wide")
 
-    vectorstore = Chroma.from_documents(
-        documents=doc_splits,
-        collection_name="rag-chroma",
-        embedding=OllamaEmbeddings(model="mxbai-embed-large:latest"),
-    )
-    retriever = vectorstore.as_retriever(k=3)
-    after_rag_template = """Answer the question based only on the following context:
-    {context}
-    Question: {question}
-    if there is no answer, please answer with "I m sorry, the context is not enough to answer the question."
+# Thème sombre et style des messages
+st.markdown(
     """
-    after_rag_prompt = ChatPromptTemplate.from_template(after_rag_template)
-    after_rag_chain = (
-        {"context": retriever, "question": RunnablePassthrough()}
-        | after_rag_prompt
-        | model_local
-        | StrOutputParser()
-    )
+    <style>
+    body {
+        background-color: #1E1E1E;
+        color: white;
+    }
+    .stButton>button {
+        background-color: #2C2C2C;
+        color: white;
+        border: 1px solid #3E3E3E;
+    }
+    .stTextInput>div>div>input {
+        background-color: #2C2C2C;
+        color: white;
+    }
+    .stTextInput>div>label {
+        color: white;
+    }
+    .message-box {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+    }
+    .user-message {
+        background-color: #0078D4;
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 60%;
+        text-align: left;
+    }
+    .bot-message {
+        background-color: #444444;
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 60%;
+        text-align: left;
+    }
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+    .user-container {
+        justify-content: flex-end;
+    }
+    .bot-container {
+        justify-content: flex-start;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-    return after_rag_chain.invoke(question)
+# Titre de l'application
+st.title("💬 Mon Assistant Parcours")
+st.sidebar.title("Description & Fonctionnalités")
+st.sidebar.text("Ce chatbot est conçu pour répondre à vos questions sur les bourses d'études!")
 
+# Initialisation de l'historique des messages
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
+# Affichage des messages
+st.write("Chat")
+for msg in st.session_state.messages:
+    if msg["user"] == "user":
+        st.markdown(
+            f"""
+            <div class="message-box user-container">
+                <div class="user-message">{msg['content']}</div>
+                <img class="avatar" src="https://via.placeholder.com/40/0078D4/FFFFFF/?text=U">
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            f"""
+            <div class="message-box bot-container">
+                <img class="avatar" src="https://via.placeholder.com/40/444444/FFFFFF/?text=B">
+                <div class="bot-message">{msg['content']}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
+# Entrée utilisateur
+question = st.text_input("Posez votre question ici :", "")
 
-
-
-
-
-
-st.title("RAG Chatbot")
-st.write("This is a RAG chatbot that can answer questions based on a given context.")
-file = st.file_uploader("Upload a PDF file", type=["pdf"])
-if file:
-    doc = read_pdf(file)
-    question = st.text_input("Ask a question")
-    if st.button("Ask"):
-        answer = retriever(doc, question)
-        st.write(answer)
-else:
-    question = st.text_input("Ask a question")
-    if st.button("Ask"):
+# Gestion de la logique des réponses
+if st.button("Envoyer"):
+    if question:
+        # Ajout de la question à l'historique
+        st.session_state.messages.append({"user": "user", "content": question})
+        
+        # Génération de la réponse
         answer = retrieve_from_db(question)
-        st.write(answer)
+        
+        # Ajout de la réponse à l'historique
+        st.session_state.messages.append({"user": "bot", "content": answer})
 
-
-
-
-
-
-
+        # Réinitialisation de la question
+        question = ""
+        
