@@ -14,12 +14,14 @@ git clone https://github.com/i038615/local_rag/
 cd [repository-directory]
 ```
 2. Installer les dépendances : 
- Assurez-vous que Python 3.10+ est installé, puis exécutez :
+ Assurez-vous que Python 3.10(de préférence) est installé, puis exécutez :
  ```bash
  pip install -r requirements.txt
  ```
 3. Télécharger les modèles : Ce projet utilise les modèle Ollama Mistral et mxbai-embed-large:latest . Suivez la documentation officielle d’Ollama pour installer les modèles pour une utilisation locale.
-</details>
+4. Création des dossiers documents et data:
+   Le dossier "documents" contient tous les fichiers pdf à utiliser
+   Le dossier "data" sert à stocker la base de données chroma
 
 # Fonctionnement
 - **ingest.py** : Charge les documents PDF d'un dossier, les découpe en morceaux gérables, et indexe ces morceaux dans un magasin vectoriel pour une récupération efficace.
@@ -29,8 +31,8 @@ cd [repository-directory]
 Les contributions à ce projet sont les bienvenues.
 
 # Auteurs 
-**AKAKPO Koffi Moïse**
-**ISMAILI Ayman**
+- **AKAKPO Koffi Moïse**
+- **ISMAILI Ayman**
 
 
 
