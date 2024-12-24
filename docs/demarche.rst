@@ -33,8 +33,9 @@ Structure du projet :
    - "documents" : contient les fichiers PDF des bourses d'études.
    - "data" : stocke le vectorstore Chroma.
 
-.. image:: https://drive.google.com/file/d/1DfwADJKu5az-cGOhEr3Us3hmPOYPMVys/view?usp=drive_link
-   :alt: Développement
-   :width: 400px
-   :align: center
+-----------
+3. Résultat 
+-----------
+Nous obtenons ainsi cette interface simple de streamlit :
+
 
