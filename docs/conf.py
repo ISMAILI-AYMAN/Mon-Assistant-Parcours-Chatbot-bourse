@@ -5,7 +5,7 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-import sphinx-rtd-theme
+import sphinx_rtd_theme
 project = 'MON ASSISTANT PARCOURS CHATBOT BOURSE'
 copyright = '2024, ISMAILI AYMAN AND AKAKPO Koffi Moïse'
 author = 'ISMAILI AYMAN AND AKAKPO Koffi Moïse'
