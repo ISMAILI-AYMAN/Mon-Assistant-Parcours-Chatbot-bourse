@@ -2,11 +2,8 @@
 INTRODUCTION
 ===============================
 
-Ce projet a pour but de permettre aux étudiants désireux de bénéficier d'une bourse d'étude en fournissant des informations tel que:
--les conditions d'admission aux bourses
--les montants et les avantages
--les documents à fournir
--Des suggestion de bourses en fonctions des données personnelles
+Nous avons initié ce projet à cause de certaines difficultés d’accès des étudiants aux informations de bourses et spécialement le choix d’une bourse d’étude.Ce chatbot sera utile pour chaque élève désireux de bénéficier d'une bourse afin de bien choisir et de bien se préparer pour les procédures de candidature en fournissant plusieurs informations.
+
 
 
 
