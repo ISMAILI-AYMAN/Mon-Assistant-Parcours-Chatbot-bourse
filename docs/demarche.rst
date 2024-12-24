@@ -23,6 +23,11 @@ En ce qui concerne l'interface Streamlit, nous avons opté pour une interface si
 ----------------------------
 Structure du projet :
 
+.. image:: https://github.com/ISMAILI-AYMAN/Mon-Assistant-Parcours-Chatbot-bourse/blob/main/docs/rag.PNG
+   :alt: Principe du RAG
+   :width: 400px
+   :align: center
+
 1. **Fichiers** :
 
    - `ingest.py` : permet d'obtenir le vectorstore Chroma.
@@ -33,9 +38,6 @@ Structure du projet :
    - "documents" : contient les fichiers PDF des bourses d'études.
    - "data" : stocke le vectorstore Chroma.
 
------------
-3. Résultat 
------------
-Nous obtenons ainsi cette interface simple de streamlit :
+
 
 
