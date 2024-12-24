@@ -15,8 +15,7 @@ SOMMAIRE:
    introduction
    features
    demarche
-   installation
-   usage
+   installation et usage
    resultats
    experience
    conclusion
