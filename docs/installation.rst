@@ -23,6 +23,7 @@ Pour configurer l’environnement et exécuter ce projet, suivez les étapes ci-
 git clone https://github.com/i038615/local_rag/
 cd [repository-directory]
 ```
+
 2. Installer les dépendances : 
 
  Assurez-vous que Python 3.10(de préférence) est installé, puis exécutez :
@@ -31,9 +32,7 @@ cd [repository-directory]
  ```
 3. Télécharger les modèles : Ce projet utilise les modèle Ollama Mistral et mxbai-embed-large:latest . Suivez la documentation officielle d’Ollama pour installer les modèles pour une utilisation locale.
 4. Création des dossiers documents et data:
-
-   Le dossier "documents" contient tous les fichiers pdf à utiliser
-
-   Le dossier "data" sert à stocker la base de données chroma
+   Le dossier "documents" contient tous les fichiers pdf à utiliser.
+   Le dossier "data" sert à stocker la base de données chroma.
 
 
