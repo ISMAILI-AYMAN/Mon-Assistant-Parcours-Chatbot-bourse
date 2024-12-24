@@ -3,7 +3,7 @@ FEATURES
 ====================================
 
 ---------------
-1)Obejctif 
+1)Obejectifs 
 ---------------
 Ce projet a pour objectifs:
 
