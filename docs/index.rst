@@ -45,8 +45,12 @@ Les contributions à ce projet sont les bienvenues.
    :maxdepth: 2
    :caption: Contenu:
 
+   remerciments
    introduction
    features
+   demarche
    installation
    usage
-   faq
+   resultats
+   experience
+   conclusion
